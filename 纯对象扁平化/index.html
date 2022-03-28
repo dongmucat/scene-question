@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <pre>
+        // 实现一个 flatten 函数，实现如下的转换功能
+const obj = {
+  a: 1,
+  b: [1, 2, { c: true }],
+  c: { e: 2, f: 3 },
+  g: null,
+};
+// 转换为
+let objRes = {
+  a: 1,
+  "b[0]": 1,
+  "b[1]": 2,
+  "b[2].c": true,
+  "c.e": 2,
+  "c.f": 3,
+  g: null,
+};
+    </pre>
+</body>
+<script>
+    /*     对于题目而言，基础数据类型无需再进行深层次遍历，
+    引用数据类型需要再次进行递归。 */
+    function flatten(obj) {
+        let res = {};
+
+        function process(key, value) {
+            //首先判断是基础数据类型还是引用数据类型
+            //基础数据类型
+            if (Object(value) !== value) {
+                res[key] = value;
+            }
+            //引用数据类型
+            //判断是不是数组
+            else if (Array.isArray(value)) {
+                //如果是数组
+                for (let index = 0; index < value.length; index++) {
+                    //递归
+                    process(`${key}[${index}]`, value[index])
+                }
+                /* 如果数组为空 */
+                if (value.length === 0) {
+                    res[key] = []
+                }
+            }
+            //如果是对象
+            else {
+                let objArr = Object.keys(value);
+                if (objArr.length === 0 && key) {
+                    res[key] = {};
+                }
+                /* 递归 */
+                objArr.forEach(item => {
+                    process(key ? `${key}.${item}` : `${item}`, value[item])
+                })
+
+            }
+        }
+        process('', obj);
+        return res;
+    }
+
+    /* test */
+    const obj = {
+        a: 1,
+        b: [1, 2, {
+            c: true
+        }],
+        c: {
+            e: 2,
+            f: 3
+        },
+        g: null,
+    };
+    console.log(flatten(obj));
+</script>
+
+</html>
