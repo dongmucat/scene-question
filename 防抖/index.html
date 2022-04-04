@@ -41,35 +41,34 @@
         如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
         */
         //非立即执行版本
-        function debounce(func, wait) {
-            let timeout;
+        function debounce(func, delay) {
+            let timeoutId;
             return function () {
                 //let context = this;
                 const args = [...arguments];
-                if (timeout) {
-                    clearTimeout(timeout);
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
                 }
                 //使用箭头函数可以解决this指向问题
-                timeout = setTimeout(() => {
+                timeoutId = setTimeout(() => {
                     /* console.log(this); */
                     func.apply(this, args);
-                }, wait);
+                }, delay);
             }
         }
         //立即执行版本
-        function debounce_2(func, wait) {
-            let timeout;
+        function debounce_2(func, delay) {
+            let timeoutId;
             return function () {
                 /* const context = this; */
                 const args = [...arguments];
-                if (timeout) clearTimeout(timeout);
+                if (timeoutId) clearTimeout(timeoutId);
                 const callNow = !timeout;
-                timeout = setTimeout(() => {
-                    timeout = null;
-                }, wait)
+                timeoutId = setTimeout(() => {
+                    timeoutId = null;
+                }, delay)
                 if (callNow)  func.apply(this, args);
             }
-
         }
     </script>
 </body>
