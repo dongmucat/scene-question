@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>节流</title>
+</head>
+
+<body>
+    <span>没有节流的input:</span> <input type="text" id="normal">
+    <br>
+    <span>没有节流的input:</span> <input type="text" id="t">
+
+    <script>
+        //没有节流t
+        let normal = document.getElementById('normal');
+        normal.onkeyup = function () {
+            console.log(this.value);
+        }
+        //节流
+        let t = document.getElementById('t');
+        t.onkeyup = throttle_2(function () {
+            console.log(this.value);
+        }, 1000);
+
+
+        //节流函数定时器版本
+        function throttle(func, wait) {
+            let timeoutId;
+            return function () {
+                const args = [...arguments];
+                /* 如果在时间间隔之内，则不执行，直接返回 */
+                if (timeoutId) {
+                    return;
+                }
+                /* 如果不在时间间隔之内，则执行，执行完毕后清除timeoutId */
+                timeoutId = setTimeout(() => {
+                    func.apply(this, args);
+                    //清除定时器，不需要clearTimeOut,
+                    timeoutId = null;
+                }, wait);
+            }
+        }
+        //节流函数时间戳版本
+        function throttle_2(func, delay) {
+            let previous = 0;
+            return function () {
+                const args = [...arguments]
+                let now = Date.now();
+                /* 如果大于了时间间隔，则可以执行 */
+                if (now - previous > delay) {
+                    func.apply(this, args);
+                    /* 重新设置previous时间 */
+                    previous = now;
+                }
+
+            }
+        }
+        
+    </script>
+</body>
+
+
+</html>
