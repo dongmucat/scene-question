@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="index.js"></script>
+</head>
+
+<body>
+    <span>没有防抖的input:</span> <input type="text" id="normal">
+    <br>
+    <span>（非立即执行）防抖的input:</span> <input type="text" id="d">
+    <br>
+    <span>（立即执行）防抖的input:</span> <input type="text" id="d2">
+
+    <script>
+        // 没有防抖的input
+        let normal = document.getElementById('normal');
+        normal.onkeyup = function () {
+            console.log(this.value);
+            /*             console.log(this.value); */
+        }
+
+        // 防抖的input
+        let d = document.getElementById('d');
+        d.onkeyup = debounce(function () {
+            console.log(this.value);
+        }, 1000);
+        // 防抖的input
+        let d2 = document.getElementById('d2');
+        d2.onkeyup = debounce_2(function () {
+            console.log(this.value);
+        }, 1000);
+
+
+        /*
+        所谓防抖，就是指触发事件后 n 秒后才执行函数，
+        如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+        */
+        //非立即执行版本
+        function debounce(func, wait) {
+            let timeout;
+            return function () {
+                //let context = this;
+                const args = [...arguments];
+                if (timeout) {
+                    clearTimeout(timeout);
+                }
+                //使用箭头函数可以解决this指向问题
+                timeout = setTimeout(() => {
+                    /* console.log(this); */
+                    func.apply(this, args);
+                }, wait);
+            }
+        }
+        //立即执行版本
+        function debounce_2(func, wait) {
+            let timeout;
+            return function () {
+                /* const context = this; */
+                const args = [...arguments];
+                if (timeout) clearTimeout(timeout);
+                const callNow = !timeout;
+                timeout = setTimeout(() => {
+                    timeout = null;
+                }, wait)
+                if (callNow)  func.apply(this, args);
+            }
+
+        }
+    </script>
+</body>
+
+
+</html>
