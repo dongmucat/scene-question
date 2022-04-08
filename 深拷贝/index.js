@@ -28,7 +28,7 @@ function solution1() {
 // 实现深拷贝方法之二：第三方库Lodash中的_.cloneDeep(value)
 
 // 手写深拷贝（递归：对属性所有引用值进行遍历，直到是基本类型的值为止）
-function deepCopy(obj) {
+function deepCopy1(obj) {
     if (!obj && typeof obj !== 'object') {
         throw new Error('error arguments');
     }
@@ -39,7 +39,7 @@ function deepCopy(obj) {
         if (obj.hasOwnProperty(key)) {
             //递归：对属性所有引用值进行遍历，直到是基本类型的值为止
             if (obj[key] && typeof obj[key] === 'object') {
-                targetObj[key] = deepCopy(obj[key]);
+                targetObj[key] = deepCopy1(obj[key]);
             } else {
                 targetObj[key] = obj[key];
             }
@@ -47,6 +47,41 @@ function deepCopy(obj) {
     }
     return targetObj;
 }
+//第二版本
+function deepCopy(obj, map = new WeakMap()) {
+    //空值和非引用对象处理
+    if (obj === null || typeof obj !== 'object') {
+        throw new TypeError('error arguments');
+    }
+    //特殊判断
+    if (Object.prototype.toString.call(obj) === '[object Date]') return new Date(obj)
+    if (Object.prototype.toString.call(obj) === '[object RegExp]') return new RegExp(obj)
+    if (Object.prototype.toString.call(obj) === '[object Error]') return new Error(obj)
+    if (Object.prototype.toString.call(obj) === '[object Function]') {
+        return function (...args) {
+            return obj.apply(this, args)
+        }
+    }
+    // 判断属性值之前有没有被遍历过
+    if (map.has(obj)) return map.get(obj)
+    //声明新对象/数组
+    const newObj = Array.isArray(obj) ? [] : {};
+    //标记
+    map.set(obj, newObj);
+    for (let key in obj) {
+        //只对 对象自有属性进行拷贝
+        if (obj.hasOwnProperty(key)) {
+            //递归：对属性所有引用值进行遍历，直到是基本类型的值为止
+            if (obj[key] && typeof obj[key] === 'object') {
+                newObj[key] = deepCopy(obj[key], map);
+            } else {
+                newObj[key] = obj[key];
+            }
+        }
+    }
+    return newObj;
+}
+
 
 function test() {
     const obj = {
@@ -60,17 +95,24 @@ function test() {
     obj2.info.age = 50;
     obj2.info.name = 'tom';
     obj2.price = 200;
-    console.log('obj: ',obj);
-    console.log('obj2: ',obj2);
+    console.log('obj: ', obj);
+    console.log('obj2: ', obj2);
     //=====================分割线=====================
-    const arr = [{name:'jack'},1,{info:{age:18}}];
+    const arr = [{ name: 'jack' }, 1, { info: { age: 18 } }];
     const arr2 = deepCopy(arr);
     arr2[0].name = 'tom';
     arr2[2].info.age = 20;
-    console.log('arr: ',arr);
-    console.log('arr2: ',arr2);
+    console.log('arr: ', arr);
+    console.log('arr2: ', arr2);
 }
 
-test();
+function test2() {
+    var obj = { a: 1 };
+    obj.obj1 = obj;
+    var newObj = deepCopy(obj);
+    console.log(newObj);
+}
+
+test2();
 
 
