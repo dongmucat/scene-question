@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>simple_jsonp</title>
+</head>
+
+<body>
+
+    <script>
+        /* 
+            jsonp的执行流程其实就是简单的两步。
+            第一，在前端预先定义好一个带参数的回调函数用来接受后端传来的数据。
+            第二，在后端启动一个server服务，将要传的数据以定义好了的回调函数名
+            加上返回结果的方式传给前端。
+        */
+        //客户端创建一个 callback 函数，用来接收服务端返回的数据。
+        function onResponse(data) {
+            console.log(data);
+        }
+        //创建script
+        var script = document.createElement('script')
+        script.src = 'http://localhost:9090/api?callback=onResponse'
+        document.head.appendChild(script)
+        document.head.removeChild(script)
+    </script>
+</body>
+
+</html>
