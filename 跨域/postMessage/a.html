@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>a</title>
+</head>
+<body>
+    <iframe src="http://127.0.0.1:5500/%E8%B7%A8%E5%9F%9F/postMessage/b.html" frameborder="0" id="frame" onload="load()"></iframe><!-- 等它加载完触发一个事件 -->
+      <script>
+        function load() {
+          let frame = document.getElementById('frame')
+          frame.contentWindow.postMessage('我爱你') //发送数据
+          window.onmessage = function(e) { //接受返回数据
+            console.log(e.data) //打印返回数据
+          }
+        }
+      </script>
+</body>
+</html>
