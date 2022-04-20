@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-<pre>
+    <pre>
     // 例如将 input 转成output的形式
     let input = [
         {
@@ -57,35 +59,45 @@
 </body>
 
 <script>
-        let input = [
-        {
-            id: 1, val: '学校', parentId: null
-        }, {
-            id: 2, val: '班级1', parentId: 1
-        }, {
-            id: 3, val: '班级2', parentId: 1
-        }, {
-            id: 4, val: '学生1', parentId: 2
-        }, {
-            id: 5, val: '学生2', parentId: 2
-        }, {
-            id: 6, val: '学生3', parentId: 3
-        },
-    ]
+    let input = [{
+        id: 1,
+        val: '学校',
+        parentId: null
+    }, {
+        id: 2,
+        val: '班级1',
+        parentId: 1
+    }, {
+        id: 3,
+        val: '班级2',
+        parentId: 1
+    }, {
+        id: 4,
+        val: '学生1',
+        parentId: 2
+    }, {
+        id: 5,
+        val: '学生2',
+        parentId: 2
+    }, {
+        id: 6,
+        val: '学生3',
+        parentId: 3
+    }, ]
 
     /* 使用递归的方法 */
     function arrayToTree(arr) {
         /* 删除，取出第一个头节点 */
         let root = arr.shift()
         let tree = {
-            id:root.id,
-            val:root.val,
-            children:arr.length > 0? toTree(root.id,arr):[]
-        } 
+            id: root.id,
+            val: root.val,
+            children: arr.length > 0 ? toTree(root.id, arr) : []
+        }
         return tree
     }
 
-    function toTree(parentId,arr) {
+    function toTree(parentId, arr) {
         /* 取出数组长度 */
         let children = []
         const len = arr.length
@@ -96,9 +108,9 @@
             if (parentId === node.parentId) {
                 /* 注意这里要用push */
                 children.push({
-                    id:node.id,
-                    val:node.val,
-                    children: toTree(node.id,arr)
+                    id: node.id,
+                    val: node.val,
+                    children: toTree(node.id, arr)
                 })
             }
         }
@@ -108,4 +120,5 @@
 
     console.log(arrayToTree(input))
 </script>
+
 </html>
