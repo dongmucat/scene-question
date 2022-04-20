@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组转对象反扁平化</title>
+</head>
+<body>
+    <pre>
+        input :['a','b','c','d','e','f','g']
+        output :{'a':{'b':{'c':{'d':{'e':{'f':'g'}}}}}}
+
+    </pre>
+    <script>
+        const input =['a','b','c','d','e','f','g']
+        const output = input.reduceRight((prev,curr)=>{
+            return {[curr]:prev}
+        })
+        console.log(output)
+    </script>
+</body>
+</html>
