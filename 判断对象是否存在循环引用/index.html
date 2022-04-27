@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function cycle(obj, parent) {
+            /* 父级数组。这里的  `|| [obj]`，是因为第一次parent为空  */
+            let parentArr = parent || [obj];
+            /* 遍历obj对象中的key */
+            for (let key in obj) {
+                /* 判断 `obj[key]`的值是否为一个Object类型引用
+                因为循环引用只有Object引用类型 */
+                if (typeof obj[key] === "object") {
+                    /* 判断是否有循环引用 */
+                    parentArr.forEach((pObj) => {
+                        if (pObj === obj[key]) {
+                            /* 打上存在存在循环引用的标识 `cycle` */
+                            obj[key] = "[cycle]";
+                        }
+                    });
+                    /* 递归,父级数组添加一个新成员：obj[key]] */
+                    cycle(obj[key], [...parentArr, obj[key]])
+                }
+            }
+            /* 返回改造后的obj */
+            return obj;
+        }
+        var a = {
+            b: {
+                c: {}
+            }
+        };
+
+        a.b.c.d = a;
+
+        console.log(cycle(a));
+    </script>
+</body>
+
+</html>
