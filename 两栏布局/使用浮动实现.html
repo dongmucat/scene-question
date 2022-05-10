@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用浮动实现</title>
+
+    <style>
+        /* 1.使用 float 左浮左边栏
+           2. 右边模块使用 margin-left 撑出内容块做内容展示
+           3.为父级元素添加BFC，防止下方元素飞到上方内容 */
+        .box {
+            overflow: hidden;
+            /* 添加BFC */
+        }
+
+        .left {
+            float: left;
+            width: 200px;
+            background-color: red;
+            height: 200px;
+        }
+
+        .right {
+            margin-left: 200px;
+            background-color: blue;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </div>
+</body>
+
+</html>
