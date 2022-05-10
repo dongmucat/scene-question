@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用flex实现</title>
+    <style>
+        /* 1.给父容器添加display:flex
+           2.左边容器设置宽度
+           3.右边容器flex:1占据剩余宽度 */
+        .box {
+            display: flex;
+        }
+
+        .left {
+            background-color: red;
+            width: 200px;
+            height: 200px;
+        }
+
+        .right {
+            background-color: blue;
+            height: 200px;
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </div>
+</body>
+
+</html>
