@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双飞翼布局</title>
+    <style>
+        .center-inner {
+            background: pink;
+            margin: 0 200px;
+        }
+
+        .center {
+            width: 100%;
+        }
+
+        .column {
+            /* 三者都使用浮动 */
+            float: left;
+        }
+
+        .left {
+            width: 200px;
+            background: lightgreen;
+            margin-left: -100%;
+        }
+
+        .right {
+            background: lightblue;
+            width: 200px;
+            margin-left: -200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="column center">
+            <div class="center-inner">
+                center
+            </div>
+        </div>
+        <div class="column left">left</div>
+        <div class="column right">right</div>
+    </div>
+</body>
+
+</html>
