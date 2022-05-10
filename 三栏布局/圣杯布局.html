@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圣杯布局</title>
+    <style>
+        /* 左右宽度固定，中间自适应 */
+        /* float 使他们处在了同一行， 只是center把一行都占据了，
+         把其他两个都挤下去了， 所以当负margin的时候会出现回去 */
+        .container {
+            overflow: hidden;
+            /* padding大于等于左右固定的宽度 */
+            padding: 0 200px;
+        }
+
+        .column {
+            float: left;
+        }
+        .center {
+            width: 100%;
+            background-color: pink;
+        }
+
+        .left {
+            width: 200px;
+            background-color: lightgreen;
+            /* 移动 父盒子的宽度 回到第一行的最前面 */
+            margin-left: -100%;
+            /* 移动 自身的宽度 为了防止挡住center */
+            position: relative;
+            left: -200px;
+        }
+
+        .right {
+            width: 200px;
+            background-color: lightblue;
+            /* 移动 自身的宽度 回到第一行 */
+            margin-right: -200px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="column center">center</div>
+        <div class="column left">left</div>
+        <div class="column right">right</div>
+    </div>
+</body>
+
+</html>
