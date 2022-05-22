@@ -82,6 +82,35 @@ function deepCopy(obj, map = new WeakMap()) {
     return newObj;
 }
 
+//第三版本
+function deepClone(obj,map = new WeakMap()) {
+    if (obj === null || typeof(obj) !== 'object') {
+        throw new Error('Error Arguments')
+    }
+    // 如果之前有标记过直接返回
+    if (map.has(obj)) {
+        return map.get(obj);
+    }
+    const newObj = Array.isArray(obj) ? [] : {};
+    //标记，注意此处存储的是引用
+    map.set(obj,newObj);
+    //遍历obj
+    for(let key in obj){
+        // 只对obj自身的属性进行拷贝
+        if (obj.hasOwnProperty(key)) {
+            // 如果obj[key]是引用数据类型的话，则递归
+            if (obj[key] && typeof(obj[key]) === 'object') {
+                newObj[key] = deepClone(obj[key],map);
+            }else{
+                // 基本数据类型则直接复制
+                newObj[key] = obj[key];
+            }
+        }
+    }
+    // 返回
+    return newObj;
+}
+
 
 function test() {
     const obj = {
