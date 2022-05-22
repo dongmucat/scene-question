@@ -17,25 +17,21 @@
     <span>（立即执行）防抖的input:</span> <input type="text" id="d2">
 
     <script>
+
+        function logValue() {
+            console.log(this.value);
+        }
         // 没有防抖的input
         let normal = document.getElementById('normal');
-        normal.onkeyup = function () {
-            console.log(this.value);
-            /*             console.log(this.value); */
-        }
+        normal.addEventListener('keyup',logValue)
 
         // 防抖的input
         let d = document.getElementById('d');
-        d.onkeyup = debounce(function () {
-            console.log(this.value);
-        }, 1000);
+        d.addEventListener('keyup',debounce(logValue,2000))
+
         // 防抖的input
         let d2 = document.getElementById('d2');
-        d2.onkeyup = debounce_2(function () {
-            console.log(this.value);
-        }, 1000);
-
-
+        d2.addEventListener('keyup',debounce_2(logValue,2000))
         /*
         所谓防抖，就是指触发事件后 n 秒后才执行函数，
         如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
@@ -53,6 +49,7 @@
                 timeoutId = setTimeout(() => {
                     /* console.log(this); */
                     func.apply(this, args);
+                    timeoutId = null;
                 }, delay);
             }
         }
@@ -62,12 +59,15 @@
             return function () {
                 /* const context = this; */
                 const args = [...arguments];
+                /* 如果存在定时器，则清空计时器 */
                 if (timeoutId) clearTimeout(timeoutId);
-                const callNow = !timeout;
+                /* 只有 timeoutId不存在时候，才会执行函数*/
+                if (!timeoutId)  func.apply(this, args);
+                /* 重新计时 */
                 timeoutId = setTimeout(() => {
                     timeoutId = null;
                 }, delay)
-                if (callNow)  func.apply(this, args);
+                
             }
         }
     </script>
