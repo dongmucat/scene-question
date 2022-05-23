@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise封装AJAX</title>
+</head>
+
+<body>
+    <script>
+        function getData(url) {
+            // 返回的是一个Promise
+            return new Promise((resovle, reject) => {
+                // 创建xhr实例
+                const xhr = new XMLHttpRequest();
+                // 设置请求头
+                //xhr.setRequestHeader('Content-Type', '')
+                // 设置请求方式
+                xhr.open('GET', url);
+                // 监听状态变化
+                xhr.onreadystatechange = hanlder;
+                // 发送请求
+                xhr.send();
+
+                function hanlder() {
+                    console.log(this);
+                    if (this.readyState === 4) {
+                        if (this.status === 200) {
+                            resovle(this.responseText)
+                        }else{
+                            reject(statusText)
+                        }
+                    }
+                        
+                }
+            })
+        }
+        const url = 'https://api.uomg.com/api/rand.qinghua'
+        getData(url).then((data) => {
+            document.write(data)
+            console.log(data);
+        }).catch((e) => {
+            console.log(e);
+        })
+    </script>
+</body>
+
+</html>
