@@ -20,24 +20,26 @@
                 // 设置请求方式
                 xhr.open('GET', url);
                 // 监听状态变化
-                xhr.onreadystatechange = hanlder;
-                // 发送请求
-                xhr.send();
-
-                function hanlder() {
+                xhr.onreadystatechange = function () {
                     console.log(this);
                     if (this.readyState === 4) {
                         if (this.status === 200) {
                             resovle(this.responseText)
-                        }else{
-                            reject(statusText)
+                        } else {
+                            reject(this.statusText)
                         }
                     }
-                        
+
                 }
+                // 发送请求
+                xhr.send();
+
             })
         }
+        // api接口
         const url = 'https://api.uomg.com/api/rand.qinghua'
+
+        // 发其请求
         getData(url).then((data) => {
             document.write(data)
             console.log(data);
