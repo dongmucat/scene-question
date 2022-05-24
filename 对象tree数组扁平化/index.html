@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <pre>
         source = [
         {
@@ -38,57 +37,59 @@
         },
         ];
         
-</pre>
-
-</body>
-<script>
+</pre
+    >
+  </body>
+  <script>
     /* 使用递归 */
-    function treeToarr(input,res) {
-        /* 递归结束条件 */
-        if (!input || input.length === 0) {
-            return ;
+    function treeToArr(input, res = []) {
+      /* 递归结束条件 */
+      if (!input || input.length === 0) {
+        return;
+      }
+      for (let item of input) {
+        if (item.id) {
+          const { id, name, pid } = item;
+          res.push({
+            id,
+            name,
+            pid,
+          });
         }
-        for(let item of input){
-            if (item.id) {
-                const {id,name,pid} = item;
-                res.push({id,name,pid});
-            }
-            /* 递归 */
-            treeToarr(item.children,res);
-        }
-        return res;
+        /* 递归 */
+        treeToArr(item.children, res);
+      }
+      return res;
     }
 
     //test
-    const res = [];
     const source = [
-{
-  id: 1,
-  name: "X公司",
-  pid: 0, // 父级id
-  children: [
-    {
-      id: 2,
-      name: "技术部",
-      pid: 1,
-      children: [],
-    },
-    {
-      id: 3,
-      name: "人力资源部",
-      pid: 1,
-      children: [
-        {
-          id: 4,
-          pid: 3,
-          name: "招聘组",
-        },
-      ],
-    },
-  ],
-},
-];
-    console.log(treeToarr(source,res)); 
-</script>
-
+      {
+        id: 1,
+        name: "X公司",
+        pid: 0, // 父级id
+        children: [
+          {
+            id: 2,
+            name: "技术部",
+            pid: 1,
+            children: [],
+          },
+          {
+            id: 3,
+            name: "人力资源部",
+            pid: 1,
+            children: [
+              {
+                id: 4,
+                pid: 3,
+                name: "招聘组",
+              },
+            ],
+          },
+        ],
+      },
+    ];
+    console.log(treeToArr(source));
+  </script>
 </html>
