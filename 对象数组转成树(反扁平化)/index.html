@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <pre>
     // 例如将 input 转成output的形式
     let input = [
         {
-            id: 1, val: '学校', parentId: null
+            id: 1, val: '学校', parentId: 0
         }, {
             id: 2, val: '班级1', parentId: 1
         }, {
@@ -55,70 +54,65 @@
             }]
         }]
     }
-</pre>
-</body>
+</pre
+    >
+  </body>
 
-<script>
-    let input = [{
+  <script>
+    let input = [
+      {
         id: 1,
-        val: '学校',
-        parentId: null
-    }, {
+        val: "学校",
+        parentId: 0,
+      },
+      {
         id: 2,
-        val: '班级1',
-        parentId: 1
-    }, {
+        val: "班级1",
+        parentId: 1,
+      },
+      {
         id: 3,
-        val: '班级2',
-        parentId: 1
-    }, {
+        val: "班级2",
+        parentId: 1,
+      },
+      {
         id: 4,
-        val: '学生1',
-        parentId: 2
-    }, {
+        val: "学生1",
+        parentId: 2,
+      },
+      {
         id: 5,
-        val: '学生2',
-        parentId: 2
-    }, {
+        val: "学生2",
+        parentId: 2,
+      },
+      {
         id: 6,
-        val: '学生3',
-        parentId: 3
-    }, ]
+        val: "学生3",
+        parentId: 3,
+      },
+    ];
 
     /* 使用递归的方法 */
-    function arrayToTree(arr) {
-        /* 删除，取出第一个头节点 */
-        let root = arr.shift()
-        let tree = {
-            id: root.id,
-            val: root.val,
-            children: arr.length > 0 ? toTree(root.id, arr) : []
+    function arrToTree(arr, id) {
+      // 保存结果数组
+      const res = [];
+      // 遍历原数组arr
+      for (const item of arr) {
+        if (item.parentId === id) {
+          // 找到当前id的子元素
+          // 插入子元素，每个子元素的children通过回调生成
+          const obj = { ...item };
+          // 删除 parentId
+          delete obj.parentId;
+          res.push({
+            ...obj,
+            children: arrToTree(arr, item.id),
+          });
         }
-        return tree
+      }
+      return res;
     }
 
-    function toTree(parentId, arr) {
-        /* 取出数组长度 */
-        let children = []
-        const len = arr.length
-        /* 遍历整个数组 */
-        for (let index = 0; index < len; index++) {
-            /* 如果对上了父亲 */
-            let node = arr[index]
-            if (parentId === node.parentId) {
-                /* 注意这里要用push */
-                children.push({
-                    id: node.id,
-                    val: node.val,
-                    children: toTree(node.id, arr)
-                })
-            }
-        }
-
-        return children
-    }
-
-    console.log(arrayToTree(input))
-</script>
-
+    console.log(arrToTree(input, 0));
+  </script>
 </html>
