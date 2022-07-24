@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>原生实现虚拟列表</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			html,
+			body {
+				height: 100%;
+			}
+
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			#container {
+				width: 250px;
+				height: 500px;
+				background: WhiteSmoke;
+			}
+
+			.item {
+				margin-bottom: 15px;
+				height: 50px;
+				background: lightpink;
+				border: 1px solid gray;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container"></div>
+	</body>
+	<script src="virtual-list.js"></script>
+	<script>
+		function createItem(index) {
+			const node = document.createElement("div");
+			node.className = "item";
+			node.textContent = "我是第" + index;
+			return node;
+		}
+
+		// 一万条数据
+		const TOTAL_COUNT = 1e4;
+		const data = Array(TOTAL_COUNT);
+		for (let i = 0; i < TOTAL_COUNT; i++) {
+			data[i] = createItem(i);
+		}
+
+		// 获取container
+		const container = document.getElementById("container");
+		new VritualList(container, {
+			data,
+			maxCount: 30,
+			itemHeight: 50,
+		});
+	</script>
+</html>
