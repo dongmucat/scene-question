@@ -53,13 +53,12 @@
 	<script type="module">
 		import handleAnchor from "./handleAnchor.js";
 		window.onload = function () {
-			const liList = document.querySelectorAll("li");
-			for (let index = 0; index < liList.length; index++) {
-				liList[index].onclick = function () {
-					handleAnchor('#'+liList[index].innerText);
-                    console.log(liList[index].innerText);
+			const ulDom = document.querySelector("ul");
+            // 事件委托优化
+            ulDom.onclick = function (e) {
+					handleAnchor('#'+e.target.innerText);
+                    console.log(e.target.innerText);
 				};
-			}
 		};
 	</script>
 </html>
