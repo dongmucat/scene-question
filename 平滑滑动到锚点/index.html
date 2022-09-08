@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>平滑滑动到锚点</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			html,
+			body {
+				min-height: 100vh;
+				width: 100%;
+			}
+			ul {
+				width: fit-content;
+				display: flex;
+				list-style: none;
+				margin: 0 auto;
+				gap: 30px;
+			}
+
+            ul li{
+                border: 1px solid black;
+            }
+
+			ul li:hover {
+				cursor: pointer;
+			}
+
+			div {
+				text-align: center;
+				height: 600px;
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<ul>
+				<li>anchor1</li>
+				<li>anchor2</li>
+				<li>anchor3</li>
+			</ul>
+		</header>
+		<div id="anchor1">anchor1</div>
+		<div id="anchor2">anchor2</div>
+		<div id="anchor3">anchor3</div>
+	</body>
+	<script type="module">
+		import handleAnchor from "./handleAnchor.js";
+		window.onload = function () {
+			const liList = document.querySelectorAll("li");
+			for (let index = 0; index < liList.length; index++) {
+				liList[index].onclick = function () {
+					handleAnchor('#'+liList[index].innerText);
+                    console.log(liList[index].innerText);
+				};
+			}
+		};
+	</script>
+</html>
