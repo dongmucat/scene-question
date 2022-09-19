@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vue3响应式简易版</title>
+	</head>
+	<body>
+		<div id="app"></div>
+
+		<script>
+			const data = {
+				msg: "",
+				age: 0,
+			};
+
+			// Proxy 第一个
+			const vm = new Proxy(data, {
+				// get() 获取值
+				// target 表示需要代理的对象这里指的就是 data
+				// key 就是对象的 键
+				get(target, key) {
+					return target[key];
+				},
+				// 设置值
+				// newValue 是设置的值
+				set(target, key, newValue) {
+					// 也先判断下是否和之前的值一样 节省性能
+					if (target[key] === newValue) return;
+					// 进行设置值
+					target[key] = newValue;
+					document.querySelector("#app").textContent = target[key];
+				},
+			});
+		</script>
+	</body>
+</html>
