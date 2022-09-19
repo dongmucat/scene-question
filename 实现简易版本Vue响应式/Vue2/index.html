@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vue2响应式简易版</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app"></div>
+		<script>
+			// 模拟 Vue的data
+			const data = {
+				msg: "",
+				age: 0,
+			};
+			// 模拟 Vue 实例
+			const vm = {};
+			// 把多个属性转化 响应式
+			function difineReactive() {
+				// 把data 中每一项都拿出来操作
+				Object.keys(data).forEach((key) => {
+					// 对 vm 的 属性 进行数据劫持
+					Object.defineProperty(vm, key, {
+						// 可枚举
+						enumerable: true,
+						// 可配置
+						configurable: true,
+						// 获取数据
+						get() {
+							return data[key];
+						},
+						// 设置 属性值
+						set(newValue) {
+							// 如果传入的值相等就不用修改
+							if (newValue === data[key]) return;
+							// 修改数据
+							data[key] = newValue;
+							document.querySelector("#app").innerText =
+								key + ":" + data[key] + "";
+						},
+					});
+				});
+			}
+			// 调用方法
+			difineReactive(data);
+
+			vm.msg = "哈哈";
+			vm.age = 18;
+		</script>
+	</body>
+</html>
