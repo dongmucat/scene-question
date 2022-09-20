@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Vue2简单实现虚拟列表</title>
+	</head>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		.list-view {
+			position: relative;
+			margin: 20px auto;
+			width: 500px;
+			height: 400px;
+			overflow: auto;
+			border: 1px solid #aaa;
+		}
+
+		.list-view-phantom {
+			/* 使用不可见区域，撑起这个列表，让列表的滚动条出现 */
+			position: absolute;
+			left: 0;
+			top: 0;
+			right: 0;
+			z-index: -1;
+		}
+
+		.list-view-content {
+			left: 0;
+			right: 0;
+			top: 0;
+			position: absolute;
+		}
+
+		.list-view-item {
+			padding-left: 20px;
+			color: #666;
+			line-height: 30px;
+			box-sizing: border-box;
+		}
+		li {
+			list-style-type: none;
+		}
+
+		[v-cloak] {
+			display: none;
+		}
+	</style>
+
+	<body>
+		<div id="app" v-cloak>
+			<div class="list-view" ref="scrollBoxRef" @scroll="handleScroll">
+				<div
+					class="list-view-phantom"
+					:style="{ height: contentHeight }"
+				></div>
+				<ul ref="content" class="list-view-content">
+					<li
+						class="list-view-item"
+						:style="{ height: itemHeight + 'px' }"
+						v-for="item in visibleData"
+					>
+						{{ item }}
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script>
+			new Vue({
+				el: "#app",
+				computed: {
+					contentHeight() {
+						return this.data.length * this.itemHeight + "px";
+					},
+				},
+				created() {
+					this.initData();
+				},
+				mounted() {
+					this.updateVisibleData();
+				},
+				data() {
+					return {
+						data: [],
+						itemHeight: 31,
+						visibleData: [],
+						bufferSize: 3,
+					};
+				},
+				methods: {
+					initData() {
+						for (let i = 0; i < 1000000; i++) {
+							this.data.push(i);
+						}
+					},
+					updateVisibleData(scrollTop = 0) {
+						// 要显示的数目
+						const visibleCount = Math.ceil(
+							this.$refs.scrollBoxRef.clientHeight /
+								this.itemHeight
+						);
+						// 上和下都要预留bufferSize
+						// 开始索引，容器的scrollTop / 一项的高度 - bufferSize缓冲
+						const start = Math.max(
+							Math.floor(scrollTop / this.itemHeight) -
+								this.bufferSize,
+							0
+						);
+						// 结束索引，开始索引 + 要显示的数目 + bufferSize缓冲
+						const end = start + visibleCount + this.bufferSize;
+						// 滚动时，动态改变数组数据
+						this.visibleData = this.data.slice(start, end);
+						// 设置列表的transfromY，开始索引 * 一项的高度
+						this.$refs.content.style.webkitTransform = `translate3d(0, ${
+							start * this.itemHeight
+						}px, 0)`;
+					},
+					handleScroll() {
+						const scrollTop = this.$refs.scrollBoxRef.scrollTop;
+						this.updateVisibleData(scrollTop);
+					},
+				},
+			});
+		</script>
+	</body>
+</html>
