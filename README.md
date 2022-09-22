@@ -39,3 +39,5 @@
 - [banner图片宽高自适应](banner图片宽高自适应)
 - [卡片翻转](卡片翻转)
 - [平滑滑动到锚点](平滑滑动到锚点)
+- [实现简易版本Vue响应式](实现简易版本Vue响应式)
+- [setTimeout代替setInterval](setTimeout代替setInterval)
