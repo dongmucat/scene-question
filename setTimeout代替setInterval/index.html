@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>setTimeout代替setInterval</title>
+	</head>
+	<body>
+		<script>
+			/***
+			 * 解释版本1：当使用setInterval的时候，需要等到任务队列没有该定时器的任何其他
+			 *            实例代码时候，才将定时器代码添加到队列中，而当使用setTimeout的时候，会立马推到任务队列里
+			 * 解释版本2：每个 setTimeout 产生的任务会直接 push 到任务队列中；
+			 *          而 setInterval 在每次把任务 push 到任务队列前，
+			 *          都要进行一下判断(看上次的任务是否仍在队列中，如果有则不添加，没有则添加)
+			 */
+
+			// mySetInterval 只调用了一次，这样的直接返回的永远都是第一个 setTimeout 的 timer。如何让 timer 不固定呢？对象！返回一个对象 clearTimeout() 作为属性值返回！属性值是个方法，清除定时器，就是让myClearInterval 调用这个方法！这样写：
+			function mySetInterval(fn, delay) {
+				let timer = null;
+				function inside() {
+					console.log(new Date().toLocaleString()); // 打印看看时间
+					clearTimeout(timer); // 把上一次的 timer 掉，这里使用了闭包， inside 访问了不属于自己作用域的变量，也就是 mySetInterval 下的 timer
+					fn();
+					timer = setTimeout(inside, delay);
+				}
+				timer = setTimeout(inside, delay);
+				return {
+					// 返回一个对象 clearTimeout() 作为属性值返回！
+					clear() {
+						clearTimeout(timer);
+					},
+				};
+			}
+
+			// 清除定时器
+			function myClearInterval(flagTimer) {
+				flagTimer.clear();
+			}
+
+			// 测试
+
+			function myCallback() {
+				console.log("testmySetInterval");
+			}
+			/* const timer = mySetInterval(myCallback, 1000); */
+			// 控制台直接调用 myClearInterval(timer)
+		</script>
+	</body>
+</html>
