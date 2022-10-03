@@ -41,3 +41,5 @@
 - [平滑滑动到锚点](平滑滑动到锚点)
 - [实现简易版本Vue响应式](实现简易版本Vue响应式)
 - [setTimeout代替setInterval](setTimeout代替setInterval)
+- [icon二维码弹窗](icon二维码弹窗)
+- [requestAnimationFrame替代setTimeout、setInterval](requestAnimationFrame替代setTimeout、setInterval)
