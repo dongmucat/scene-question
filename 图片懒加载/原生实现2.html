@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>IntersectionObserver实现图片懒加载</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+			}
+
+			#app div {
+				border: 1px solid blue;
+				height: 471px;
+			}
+
+			#app div img {
+				width: auto;
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/IU1.png" /></div>
+		</div>
+		<script>
+			window.onload = function () {
+				setTimeout(() => {
+					window.scrollTo(0, 0);
+				}, 10);
+			};
+			let images = document.querySelectorAll("img");
+			let viewHeight = window.innerHeight; //可视区域高度
+			let n = 0; //记录已触发渲染图片的数量
+
+			const observer = new IntersectionObserver(loadLazy);
+
+			function loadLazy(entries) {
+				for (let i = 0; i < entries.length; i++) {
+					const entry = entries[i];
+					if (entry.intersectionRatio <= 0) {
+						break;
+					}
+					// 懒加载图片，完成后从监听列表中删除
+					entry.target.src = entry.target.getAttribute("data-src");
+					observer.unobserve(entry.target);
+				}
+			}
+
+			//节流函数立即执行定时器版本
+			function throttle_2(func, wait) {
+				let timeoutId;
+				return function () {
+					const args = [...arguments];
+					/* 如果在时间间隔之内，则不执行，直接返回 */
+					if (timeoutId) {
+						return;
+					}
+					/* 立即执行 */
+					if (!timeoutId) {
+						func.apply(this, args);
+					}
+					/* 如果不在时间间隔之内，则执行，执行完毕后清除timeoutId */
+					timeoutId = setTimeout(() => {
+						//清除定时器，不需要clearTimeOut,
+						timeoutId = null;
+					}, wait);
+				};
+			}
+
+			images.forEach((img) => observer.observe(img));
+		</script>
+	</body>
+</html>
