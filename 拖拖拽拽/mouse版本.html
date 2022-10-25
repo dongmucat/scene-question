@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+
+			body,
+			html {
+				width: 100%;
+				min-height: 100vh;
+			}
+
+			.drag {
+				width: 50px;
+				height: 50px;
+				background-color: lightseagreen;
+				cursor: pointer;
+				position: fixed;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="drag"></div>
+		<script>
+			const dragDom = document.querySelector(".drag");
+
+			function drag(dragDom) {
+				const pos = {
+					oldX: 0,
+					oldY: 0,
+					newX: 0,
+					newY: 0,
+				};
+				dragDom.onmousedown = function (e) {
+					if (!this.style.left && !this.style.top) {
+						//第一次设置left、top为0
+						this.style.left = 0;
+						this.style.top = 0;
+					}
+					pos.oldX = e.clientX; //记录初始光标相对于视窗坐标
+					pos.oldY = e.clientY;
+					document.onmousemove = function (e) {
+						pos.newX = e.clientX; //获取当前新光标相对于视窗坐标
+						pos.newY = e.clientY;
+						dragDom.style.left =
+							parseInt(dragDom.style.left) +
+							pos.newX -
+							pos.oldX +
+							"px"; //更新
+						dragDom.style.top =
+							parseInt(dragDom.style.top) +
+							pos.newY -
+							pos.oldY +
+							"px";
+						pos.oldX = pos.newX; //新坐标变为老坐标
+						pos.oldY = pos.newY;
+					};
+					document.onmouseup = function () {
+						document.onmousemove = null;
+						document.onmouseup = null;
+					};
+				};
+			}
+
+			drag(dragDom);
+		</script>
+	</body>
+</html>
