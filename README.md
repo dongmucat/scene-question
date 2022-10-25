@@ -43,3 +43,4 @@
 - [setTimeout代替setInterval](setTimeout代替setInterval)
 - [icon二维码弹窗](icon二维码弹窗)
 - [requestAnimationFrame替代setTimeout、setInterval](requestAnimationFrame替代setTimeout、setInterval)
+- [拖拖拽拽](拖拖拽拽)
