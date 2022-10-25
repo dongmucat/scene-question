@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>dragApi版本</title>
+		<style type="text/css">
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			#container {
+				position: relative;
+				width: 100%;
+				height: 500px;
+				border: 1px solid black;
+			}
+			#icon {
+				display: inline-block;
+				width: 100px;
+				height: 100px;
+				position: absolute;
+				top: 0;
+				left: 0;
+				background-color: lightgreen;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container" ondragover="allowDrop(event)" ondrop="drop(event)">
+			<div id="icon" draggable="true" ondragstart="drag(event)"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//保存位置的状态值
+		const pos = {
+			offsetTop: 0,
+			offsetLeft: 0,
+			curTop: 0,
+			curLeft: 0,
+		};
+
+		function allowDrop(ev) {
+			//ev是事件对象
+			ev.preventDefault(); //取消事件已经关联的默认活动
+		}
+
+		function drag(ev) {
+			//dataTransfer是一个媒介，将目标对象放入媒介
+			//dataTransfer对象用来保存被拖动的数据，仅在拖动事件有效
+			//这里将被拖动元素的id保存为名为Text的键值对中
+			ev.dataTransfer.setData("Text", ev.target.id);
+			//获取被拖动对象相对于上层元素顶边和左边位置
+			pos.offsetTop = ev.target.offsetTop;
+			pos.offsetLeft = ev.target.offsetLeft;
+			pos.curTop = ev.clientY;
+			pos.curLeft = ev.clientX;
+		}
+		function drop(ev) {
+			ev.preventDefault();
+			const data = ev.dataTransfer.getData("text");
+			const elem = document.getElementById(data);
+			elem.style.left = pos.offsetLeft + ev.clientX - pos.curLeft + "px";
+			elem.style.top = pos.offsetTop + ev.clientY - pos.curTop + "px";
+		}
+	</script>
+</html>
