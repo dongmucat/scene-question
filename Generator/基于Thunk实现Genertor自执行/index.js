@@ -22,13 +22,12 @@ const gen = function* () {
 function step1(gen) {
 	// 其实是将一样的回调函数，反复传入 next 方法的 value 属性
 	const g = gen();
-	const r1 = g.next();
-	r1.value((err, data) => {
+
+	g.next().value((err, data) => {
 		if (err) {
 			throw err;
 		}
-		const r2 = g.next(data);
-		r2.value((err, data) => {
+		g.next(data).value((err, data) => {
 			if (err) {
 				throw err;
 			}
