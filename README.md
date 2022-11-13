@@ -45,3 +45,4 @@
 - [requestAnimationFrame替代setTimeout、setInterval](requestAnimationFrame替代setTimeout、setInterval)
 - [拖拖拽拽](拖拖拽拽)
 - [设计一个repeat函数](设计一个repeat函数)
+- [骨架屏](骨架屏)
