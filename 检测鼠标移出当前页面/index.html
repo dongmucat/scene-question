@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>检测鼠标移出当前页面</title>
+		<style>
+			* {
+				padding: 0;
+				margin: 0;
+			}
+            html,body{
+                width: 100%;
+                min-height: 100vh;
+            }
+			div {
+				height: 200px;
+				width: 200px;
+				background-color: lightpink;
+			}
+		</style>
+	</head>
+	<body>
+		<div>检测鼠标移出当前页面</div>
+
+		<script>
+			function addEvent(obj, evt, fn) {
+				if (obj.addEventListener) {
+					obj.addEventListener(evt, fn, false);
+				} else if (obj.attachEvent) {
+					obj.attachEvent("on" + evt, fn);
+				}
+			}
+
+			addEvent(document, "mouseout", function (e) {
+				e = e ? e : window.event;
+				var from = e.relatedTarget || e.toElement;
+				if (!from || from.nodeName == "HTML") {
+					// stop your drag event here
+					// for now we can just use an alert
+					alert("left window");
+				}
+			});
+		</script>
+	</body>
+</html>
