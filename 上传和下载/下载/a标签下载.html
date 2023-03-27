@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>使用a标签下载</title>
+	</head>
+	<body>
+		<a href="http://www.baidu.com" download="baidu.html">下载</a>
+		<!-- href指定的是下载的资源文件，如xxxx/yyy.xlsx  download用于指定下载的文件名-->
+		<!-- 如果没有 download 属性，则请求内容的 Content-Disposition 来确定-->
+		<!-- 如果 Content-Disposition 也没有就会使用请求的URL的最后一部分作为文件名 -->
+
+		<script>
+			// 上面是通过 a 标签，可以通过js实现
+			function download() {
+				const a = document.createElement("a");
+				a.href = "http://www.baidu.com";
+				a.download = "baidu.html";
+				a.click();
+				document.body.removeChild(a);
+			}
+		</script>
+	</body>
+</html>
