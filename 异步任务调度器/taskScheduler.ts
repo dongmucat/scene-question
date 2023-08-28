@@ -1,7 +1,3 @@
-/**
- * 表示一个异步任务的类型别名。
- * @typedef {() => Promise<void>} Task
- */
 export type Task = () => Promise<void>;
 export type ErrorCallback = (error: any) => void;
 
@@ -62,13 +58,12 @@ export class TaskScheduler {
 		if (this.queue.length > 0) {
 			const taskFn = this.queue.shift();
 			try {
-				if (taskFn) {
-					await taskFn();
-				}
+				taskFn && (await taskFn());
 			} catch (error) {
 				this.errorCallback(error);
-			}
-			this.runNext();
+			} finally {
+                this.runNext();
+            }
 		} else {
 			this.running = false;
 		}
