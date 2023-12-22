@@ -10,7 +10,6 @@
 				padding: 0;
 				margin: 0;
 			}
-
 			html,
 			body {
 				width: 100%;
@@ -21,7 +20,6 @@
 				border: 1px solid blue;
 				height: 471px;
 			}
-
 			#app div img {
 				width: auto;
 				height: 100%;
@@ -31,42 +29,19 @@
 
 	<body>
 		<div id="app">
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
-			<div><img data-src="./assets/IU1.png" /></div>
+			<div><img data-src="./assets/wall1.png" alt="" /></div>
+			<div><img data-src="./assets/wall2.png" alt="" /></div>
+			<div><img data-src="./assets/wall3.png" alt="" /></div>
+			<div><img data-src="./assets/wall4.png" alt="" /></div>
+			<div><img data-src="./assets/wall5.png" alt="" /></div>
+			<div><img data-src="./assets/wall6.png" alt="" /></div>
+			<div><img data-src="./assets/wall7.png" alt="" /></div>
+			<div><img data-src="./assets/wall9.png" alt="" /></div>
+			<div><img data-src="./assets/wall10.png" alt="" /></div>
+			<!-- 其他图片 -->
 		</div>
 		<script>
-			window.onload = function () {
-				setTimeout(() => {
-					window.scrollTo(0, 0);
-				}, 10);
-			};
-			let images = document.querySelectorAll("img");
-			let viewHeight = window.innerHeight; //可视区域高度
-			let n = 0; //记录已触发渲染图片的数量
-
-			const observer = new IntersectionObserver(loadLazy);
-
-			function loadLazy(entries) {
-				for (let i = 0; i < entries.length; i++) {
-					const entry = entries[i];
-					if (entry.intersectionRatio <= 0) {
-						break;
-					}
-					// 懒加载图片，完成后从监听列表中删除
-					entry.target.src = entry.target.getAttribute("data-src");
-					observer.unobserve(entry.target);
-				}
-			}
+			const images = document.querySelectorAll("img");
 
 			//节流函数立即执行定时器版本
 			function throttle_2(func, wait) {
@@ -87,6 +62,25 @@
 						timeoutId = null;
 					}, wait);
 				};
+			}
+
+			const observer = new IntersectionObserver(
+				throttle_2(loadLazy, 500)
+			);
+
+			function loadLazy(entries) {
+				entries.forEach((entry) => {
+					const { target, intersectionRatio } = entry;
+
+					if (intersectionRatio > 0) {
+						const _target = target;
+						_target.src = _target.dataset["src"] || "";
+
+						_target.onload = () => {
+							observer.unobserve(_target);
+						};
+					}
+				});
 			}
 
 			images.forEach((img) => observer.observe(img));
